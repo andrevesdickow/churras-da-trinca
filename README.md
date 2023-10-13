@@ -12,9 +12,6 @@
   <a target="_blank" href="https://tailwindcss.com/">
     <img alt="Tailwind" src="https://img.shields.io/badge/tailwind%20css-%230ea5e9.svg?style=for-the-badge&logo=tailwind%20css&logoColor=%23ffffff" />
   </a>
-  <a target="_blank" href="https://react-query-v3.tanstack.com/">
-    <img alt="React Query" src="https://img.shields.io/badge/react--query-%23FF4154.svg?style=for-the-badge&logo=react%20query&logoColor=%23ffffff" />
-  </a>
   <a target="_blank" href="https://react-hook-form.com/">
     <img alt="React Hook Form" src="https://img.shields.io/badge/react--hook--form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=%23ffffff" />
   </a>
@@ -23,12 +20,6 @@
   </a>
   <a target="_blank" href="https://testing-library.com/">
     <img alt="Testing Library" src="https://img.shields.io/badge/-Testing--Library-%23E33332?style=for-the-badge&logo=testing-library&logoColor=white" />
-  </a>
-  <a target="_blank" href="https://storybook.js.org/">
-    <img alt="Storybook" src="https://img.shields.io/badge/-storybook-%23ff4785?style=for-the-badge&logo=storybook&logoColor=white" />
-  </a>
-  <a target="_blank" href="https://www.docker.com/">
-    <img alt="Docker" src="https://img.shields.io/badge/docker-%231371C3.svg?style=for-the-badge&logo=docker&logoColor=white" />
   </a>
 </p>
 

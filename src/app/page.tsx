@@ -1,112 +1,109 @@
-import Image from 'next/image';
+'use client';
 
-export default function Home() {
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { z } from 'zod';
+import { Button } from '@/components/Button';
+import { Link } from '@/components/Link';
+import { TextField } from '@/components/TextField';
+// import { useAuthStore } from '@/stores/authStore';
+import { useToastStore } from '@/stores/toastStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const signInSchema = z.object({
+  email: z.string()
+    .min(1, 'E-mail é obrigatório')
+    .email('E-mail inválido'),
+  password: z.string()
+    .min(8, 'A senha deve possuir pelo menos 8 caracteres')
+});
+
+type SignInData = z.infer<typeof signInSchema>;
+
+export default function HomePage() {
+  const { control, handleSubmit, formState: { isSubmitting } } = useForm<SignInData>({
+    resolver: zodResolver(signInSchema)
+  });
+
+  const handleOpenToast = useToastStore((state) => state.openToast);
+  // const setUser = useAuthStore((state) => state.setUser);
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<SignInData> = async (formData) => {
+    try {
+      const success = true;
+      // const { result, success, errors } = await signIn(formData);
+
+      if (success) {
+        // setUser(result.user);
+
+        // setCookie(AuthKeys.ACCESS_TOKEN, result.accessKeys.accessToken, {
+        //   httpOnly: process.env.NODE_ENV === 'production',
+        //   maxAge: 60 * 60 * 24 * 30 // 1 month
+        // });
+
+        // setCookie(AuthKeys.REFRESH_TOKEN, result.accessKeys.refreshToken, {
+        //   httpOnly: process.env.NODE_ENV === 'production',
+        //   maxAge: 60 * 60 * 24 * 30 // 1 month
+        // });
+
+        router.push('/panel');
+      } else {
+        // handleOpenToast({
+        //   message: join(map(errors, (error) => error.message), ', '),
+        //   title: 'Falha no login',
+        //   variant: 'error'
+        // });
+      }
+    } catch (err) {
+      const error = err as Error;
+      const message = error.message;
+
+      handleOpenToast({
+        message,
+        title: 'Falha no login',
+        variant: 'error'
+      });
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <main className="grid place-content-center min-h-screen flex-col p-24">
+      <div className="w-full h-full flex justify-center items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-3 p-8 rounded-3xl z-[1px] min-w-[400px] max-w-[440px] h-max bg-slate-50/90 dark:bg-slate-800/90"
+        >
+          <h3 className="text-center font-bold text-amber-900 dark:text-slate-50">Churras da TRINCA</h3>
+
+          <div>
+            <TextField
+              type="email"
+              name="email"
+              label="E-mail"
+              control={control}
             />
-          </a>
-        </div>
-      </div>
+            <TextField
+              type="password"
+              name="password"
+              label="Senha"
+              control={control}
+            />
+          </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={'mb-3 text-2xl font-semibold'}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={'mb-3 text-2xl font-semibold'}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={'mb-3 text-2xl font-semibold'}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={'mb-3 text-2xl font-semibold'}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          <Button
+            type="submit"
+            isLoading={isSubmitting}
+          >
+            Entrar
+          </Button>
+          <Link
+            href="/signup"
+            className="text-center text-sm"
+          >
+            Inscreva-se
+          </Link>
+        </form>
       </div>
     </main>
   );

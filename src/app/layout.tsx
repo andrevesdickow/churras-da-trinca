@@ -1,8 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
+import { ToastContainer } from '@/components/Toast';
+import { TooltipProvider } from '@/components/Tooltip';
+import { NextThemeProvider } from '@/providers/NextThemeProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['cyrillic'] });
 
 export const metadata: Metadata = {
   title: 'Churras da TRINCA',
@@ -15,8 +18,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+    <html suppressHydrationWarning lang="pt-BR">
+      <body className={montserrat.className}>
+        <NextThemeProvider>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
+          <ToastContainer />
+        </NextThemeProvider>
+      </body>
     </html>
   );
 }
