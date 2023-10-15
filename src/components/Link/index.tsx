@@ -1,5 +1,5 @@
 import NextLink, { type LinkProps as NextLinkProps } from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/mergeClassName';
 
 type LinkProps = {
   children: React.ReactNode;

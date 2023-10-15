@@ -1,8 +1,4 @@
-import { cn } from '@/lib/utils';
-
-/**
- * Component Composition Pattern
- */
+import { cn } from '@/utils/mergeClassName';
 
 type CardProps = React.ComponentProps<'div'>;
 

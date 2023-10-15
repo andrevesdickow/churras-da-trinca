@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useController } from 'react-hook-form';
 import toString from 'lodash/toString';
 import { Check as CheckIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/mergeClassName';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { helperTextClassName } from '../TextField';
 

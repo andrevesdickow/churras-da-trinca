@@ -6,8 +6,8 @@ import { map, sum } from 'lodash';
 import { Users as UsersIcon, CircleDollarSign as CircleDollarSignIcon } from 'lucide-react';
 import { Card, CardBody, CardHeader, CardSubtitle, CardTitle } from '@/components/Card';
 import { Link } from '@/components/Link';
-import { formatMoney } from '@/lib/utils';
 import { useBarbecueStore } from '@/stores/barbecueStore';
+import { formatMoney } from '@/utils/formatMoney';
 
 export default function BarbecuePage() {
   const barbecues = useBarbecueStore((state) => state.barbecues);
@@ -40,7 +40,7 @@ export default function BarbecuePage() {
               </div>
               <div className="flex flex-row align-center gap-2">
                 <CircleDollarSignIcon className="text-amber-400" />
-                <span>{formatMoney(sum(map(barbecue?.participants, (participant) => participant.paid ? participant.contribution : 0)))}</span>
+                <span>{formatMoney(sum(map(barbecue?.participants, 'contribution')))}</span>
               </div>
             </CardBody>
           </Card>
