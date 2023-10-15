@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> should render correctly Button 1`] = `
+<div>
+  <script>
+    !function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme = 'dark';c.add('dark')}else{d.style.colorScheme = 'light';c.add('light')}}else if(e){c.add(e|| '')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()
+  </script>
+  <button
+    class="inline-flex items-center justify-center gap-2 rounded-3xl text-sm font-medium uppercase ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-violet-950 dark:focus-visible:ring-violet-300 bg-slate-950 text-white hover:bg-slate-950/90 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-950/50 h-10 px-4 py-2"
+  >
+    Criar churras
+  </button>
+</div>
+`;

@@ -27,13 +27,13 @@ export const helperTextClassName = tv({
   }
 });
 
-type TextFieldProps = {
+type TextFieldProps = React.ComponentProps<'input'> & {
   name: string;
   control: any;
   label: React.ReactNode | string;
   withPasswordStrength?: boolean;
   helperText?: string;
-} & React.ComponentProps<'input'>
+}
 
 export const TextField = ({
   name,
@@ -83,6 +83,7 @@ export const TextField = ({
                 onClick={handleChangeType}
                 variant="ghost"
                 size="icon"
+                aria-label={inputType === 'password' ? 'Mostrar' : 'Ocultar'}
               >
                 {inputType === 'password' ? <EyeIcon className="w-4 h-4" /> : <EyeOffIcon className="w-4 h-4" />}
               </Button>

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> should render correctly Header 1`] = `
+<div>
+  <script>
+    !function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme = 'dark';c.add('dark')}else{d.style.colorScheme = 'light';c.add('light')}}else if(e){c.add(e|| '')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()
+  </script>
+  <header
+    class="w-full h-[250px] fixed bg-gradient-to-b from-amber-400 via-70% via-amber-100 to-white dark:via-black/5 dark:to-black-900"
+  >
+    <div
+      class="bg-barbecue w-full h-full absolute"
+    />
+    <h1
+      class="relative font-semibold text-center text-4xl mt-10 px-5 text-white dark:text-black"
+    >
+      Churras da 
+      <span
+        class="font-bold uppercase"
+      >
+        Trinca
+      </span>
+    </h1>
+  </header>
+</div>
+`;
