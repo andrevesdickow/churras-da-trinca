@@ -9,7 +9,7 @@ import { Link } from '@/components/Link';
 import { useBarbecueStore } from '@/stores/barbecueStore';
 import { formatMoney } from '@/utils/formatMoney';
 
-export default function BarbecuePage() {
+export default function HomePage() {
   const barbecues = useBarbecueStore((state) => state.barbecues);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function BarbecuePage() {
 
   return (
     <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 place-content-center gap-4 flex-col">
-      <Link href="/churras/criar">
+      <Link href="/churras/criar" aria-label="Adicionar churras">
         <Card className="bg-slate-200 dark:bg-slate-900 text-slate-800 hover:bg-slate-300 hover:dark:bg-slate-700 transition-colors justify-center">
           <CardBody className="flex-col items-center gap-4">
             <Image src="/icon-churras.svg" alt="Churras" width={70} height={70} />

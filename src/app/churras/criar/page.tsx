@@ -36,7 +36,7 @@ const createBarbecueSchema = z.object({
       }
     }),
   description: z.string()
-    .min(1, 'Descrição é obrigatório'),
+    .min(1, 'Descrição é obrigatório'),
   additionalObservations: z.string().optional(),
   priceWithDrink: z.number(),
   priceWithoutDrink: z.number()
