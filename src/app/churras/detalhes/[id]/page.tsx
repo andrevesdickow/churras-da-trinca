@@ -28,7 +28,7 @@ const participantsSchema = z.object({
 type ParticipantsFormData = z.infer<typeof participantsSchema>;
 
 const newParticipantSchema = z.object({
-  name: z.string().min(1, 'Insira o nome do participante'),
+  name: z.string().min(1, 'Nome é obrigatário'),
   withDrink: z.boolean().optional()
 });
 
