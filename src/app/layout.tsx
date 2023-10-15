@@ -1,8 +1,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
+import { setDefaultOptions } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Header } from '@/components/Header';
+import { ToastContainer } from '@/components/Toast';
+import { TooltipProvider } from '@/components/Tooltip';
+import { NextThemeProvider } from '@/providers/NextThemeProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['cyrillic'] });
+setDefaultOptions({ locale: ptBR });
 
 export const metadata: Metadata = {
   title: 'Churras da TRINCA',
@@ -15,8 +22,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+    <html suppressHydrationWarning lang="pt-BR">
+      <body className={montserrat.className}>
+        <NextThemeProvider>
+          <TooltipProvider>
+            <Header />
+            <main className="relative flex items-center gap-4 w-full flex-col px-10 top-40">
+              {children}
+            </main>
+          </TooltipProvider>
+          <ToastContainer />
+        </NextThemeProvider>
+      </body>
     </html>
   );
 }

@@ -91,7 +91,7 @@
     "import-helpers/order-imports": [
       "warn",
       {
-        "newlinesBetween": "always",
+        "newlinesBetween": "never",
         "groups": [
           [
             "/^react/"
