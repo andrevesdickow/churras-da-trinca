@@ -9,7 +9,6 @@ import {
   X as XIcon
 } from 'lucide-react';
 import { tv } from 'tailwind-variants';
-
 import { useToastStore } from '@/stores/toastStore';
 
 type ToastAction = {
@@ -154,9 +153,4 @@ export const ToastContainer = () => {
   return map(items, (item) => (
     <Toast key={item.toastId} isOpen {...item} />
   ));
-  // return (
-  //   <For each={items}>
-  //     {(item) => <Toast key={item.toastId} isOpen {...item} />}
-  //   </For>
-  // );
 };

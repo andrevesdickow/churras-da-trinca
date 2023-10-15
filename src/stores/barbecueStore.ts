@@ -1,30 +1,40 @@
-import find from 'lodash/find';
+import { find, map } from 'lodash';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 type BarbecueParticipant = {
+  participantId: string;
   name: string;
   contribution: number;
+  paid: boolean;
 }
 
 type Barbecue = {
   id: string;
-  date: Date;
+  date: string;
+  dateFormatted: string;
   description: string;
   additionalObservations?: string;
+  priceWithDrink: number;
+  priceWithoutDrink: number;
   participants?: BarbecueParticipant[];
 }
 
 type BarbecueStoreProps = {
   barbecues: Barbecue[];
-  insertBarbecue: (item: Omit<Barbecue, 'id'>) => void;
   getBarbecueById: (barbecueId: string) => Barbecue | undefined;
+  insertBarbecue: (item: Omit<Barbecue, 'id'>) => void;
+  insertParticipantInBarbecue: (barbecueId: string, participant: BarbecueParticipant) => void;
+  updateParticipantInBarbecue: (barbecueId: string, participant: BarbecueParticipant) => void;
 }
 
 export const useBarbecueStore = create(
   persist<BarbecueStoreProps>(
     (set, get) => ({
       barbecues: [],
+      getBarbecueById(barbecueId) {
+        return find(get().barbecues, ((barbecue) => barbecue.id === barbecueId));
+      },
       insertBarbecue: (item: Omit<Barbecue, 'id'>) => {
         const id = crypto.randomUUID();
 
@@ -32,13 +42,50 @@ export const useBarbecueStore = create(
           barbecues: [...state.barbecues, { ...item, id }]
         }));
       },
-      getBarbecueById(barbecueId) {
-        return find(get().barbecues, ((barbecue) => barbecue.id === barbecueId));
+      insertParticipantInBarbecue(barbecueId, participant) {
+        const existsBarbecue = get().getBarbecueById(barbecueId);
+
+        if (existsBarbecue) {
+          set((state) => ({
+            barbecues: map(state.barbecues, (barbecue) => {
+              if (barbecue.id === barbecueId) {
+                return {
+                  ...barbecue,
+                  participants: [...(barbecue.participants || []), participant]
+                };
+              }
+              return barbecue;
+            })
+          }));
+        }
+      },
+      updateParticipantInBarbecue(barbecueId, participant) {
+        const existsBarbecue = get().getBarbecueById(barbecueId);
+
+        if (existsBarbecue) {
+          set((state) => ({
+            barbecues: map(state.barbecues, (barbecue) => {
+              if (barbecue.id === barbecueId) {
+                return {
+                  ...barbecue,
+                  participants: map(barbecue.participants, (barbecueParticipant) => {
+                    if (barbecueParticipant.participantId === participant.participantId) {
+                      return participant;
+                    }
+                    return barbecueParticipant;
+                  })
+                };
+              }
+              return barbecue;
+            })
+          }));
+        }
       }
     }),
     {
       name: 'trinca-barbecues',
-      storage: createJSONStorage(() => localStorage)
+      storage: createJSONStorage(() => sessionStorage),
+      skipHydration: true
     }
   )
 );

@@ -12,6 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/Tooltip';
+import { cn } from '@/lib/utils';
 
 export const helperTextClassName = tv({
   base: 'text-[0.625rem] mt-1',
@@ -39,6 +40,7 @@ export const TextField = ({
   label,
   helperText,
   control,
+  className,
   withPasswordStrength = false,
   ...rest
 }: TextFieldProps) => {
@@ -55,7 +57,7 @@ export const TextField = ({
   }
 
   return (
-    <div className="relative z-0 mb-4">
+    <div className={cn('relative z-0 mb-4', className)}>
       <input
         {...field}
         id={name}

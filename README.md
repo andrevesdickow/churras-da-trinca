@@ -31,6 +31,7 @@ Aqui, gostamos de dar a oportunidade para que todos mostrem o seu trabalho na pr
 - Adicionar e remover participantes (colocando o seu valor de contribuição);
 - Colocar um valor sugerido por usuário de contribuição (valor com e sem bebida inclusa);
 - Visualizar os detalhes do churrasco, total de participantes e valor arrecadado.
+- Figma: https://www.figma.com/file/dCOCULjQiBYMJFmEQsTGNrzS/Churras-Trinca?type=design&mode=design
 
 ## 🔨 Tecnologias:
 
@@ -39,7 +40,6 @@ Aqui, gostamos de dar a oportunidade para que todos mostrem o seu trabalho na pr
 - **[Next.js](https://nextjs.org/)**
 - **[Tailwind](https://tailwindcss.com/)**
 - **[Radix](https://radix-ui.com/)**
-- **[React-Icons](https://react-icons.github.io/react-icons/icons?name=io5)**
 - **[React Hook Form](https://react-hook-form.com/)**
 - **[Lodash](https://lodash.com/)**
 - **[Eslint](https://eslint.org/)**

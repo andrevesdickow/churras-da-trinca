@@ -8,7 +8,7 @@ type LinkProps = {
 
 export const Link = ({ className, ...rest }: LinkProps) => (
   <NextLink
-    className={cn('text-amber-400 hover:underline', className)}
+    className={cn('text-amber-400 hover:text-amber-500 transition-colors', className)}
     {...rest}
   />
 );

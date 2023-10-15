@@ -15,7 +15,14 @@ const config: Config = {
         '2xl': '1400px'
       }
     },
-    extend: {}
+    extend: {
+      backgroundImage: {
+        'barbecue': 'url(\'/background.svg\')'
+      },
+      background: {
+        linear: 'linear-gradient(transparent, rgb(252 211 77 / 1) 60%)'
+      }
+    }
   },
   plugins: [require('tailwindcss-animate')]
 };

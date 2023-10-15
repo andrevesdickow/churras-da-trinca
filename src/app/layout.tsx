@@ -1,11 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
+import Image from 'next/image';
+import { setDefaultOptions } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Header } from '@/components/Header';
 import { ToastContainer } from '@/components/Toast';
 import { TooltipProvider } from '@/components/Tooltip';
 import { NextThemeProvider } from '@/providers/NextThemeProvider';
 
 const montserrat = Montserrat({ subsets: ['cyrillic'] });
+setDefaultOptions({ locale: ptBR });
 
 export const metadata: Metadata = {
   title: 'Churras da TRINCA',
@@ -22,7 +27,10 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <NextThemeProvider>
           <TooltipProvider>
-            {children}
+            <Header />
+            <main className="relative flex items-center gap-4 w-full flex-col px-10 top-40">
+              {children}
+            </main>
           </TooltipProvider>
           <ToastContainer />
         </NextThemeProvider>

@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   background-color: rgb(252 211 77 / 1);
   background-image: url("/background.svg");
-}
+} */
 
-body:before {
+/* body:before {
   content: "";
   display: block;
   position: fixed;
@@ -17,7 +17,7 @@ body:before {
   top: 0;
   z-index: -1;
   background: linear-gradient(transparent, rgb(252 211 77 / 1) 60%);
-}
+} */
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

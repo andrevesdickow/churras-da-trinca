@@ -1,110 +1,51 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
-import { Button } from '@/components/Button';
+import { useEffect } from 'react';
+import Image from 'next/image';
+import { map, sum } from 'lodash';
+import { Users as UsersIcon, CircleDollarSign as CircleDollarSignIcon } from 'lucide-react';
+import { Card, CardBody, CardHeader, CardSubtitle, CardTitle } from '@/components/Card';
 import { Link } from '@/components/Link';
-import { TextField } from '@/components/TextField';
-// import { useAuthStore } from '@/stores/authStore';
-import { useToastStore } from '@/stores/toastStore';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { formatMoney } from '@/lib/utils';
+import { useBarbecueStore } from '@/stores/barbecueStore';
 
-const signInSchema = z.object({
-  email: z.string()
-    .min(1, 'E-mail é obrigatório')
-    .email('E-mail inválido'),
-  password: z.string()
-    .min(8, 'A senha deve possuir pelo menos 8 caracteres')
-});
+export default function BarbecuePage() {
+  const barbecues = useBarbecueStore((state) => state.barbecues);
 
-type SignInData = z.infer<typeof signInSchema>;
-
-export default function HomePage() {
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm<SignInData>({
-    resolver: zodResolver(signInSchema)
-  });
-
-  const handleOpenToast = useToastStore((state) => state.openToast);
-  // const setUser = useAuthStore((state) => state.setUser);
-  const router = useRouter();
-
-  const onSubmit: SubmitHandler<SignInData> = async (formData) => {
-    try {
-      const success = true;
-      // const { result, success, errors } = await signIn(formData);
-
-      if (success) {
-        // setUser(result.user);
-
-        // setCookie(AuthKeys.ACCESS_TOKEN, result.accessKeys.accessToken, {
-        //   httpOnly: process.env.NODE_ENV === 'production',
-        //   maxAge: 60 * 60 * 24 * 30 // 1 month
-        // });
-
-        // setCookie(AuthKeys.REFRESH_TOKEN, result.accessKeys.refreshToken, {
-        //   httpOnly: process.env.NODE_ENV === 'production',
-        //   maxAge: 60 * 60 * 24 * 30 // 1 month
-        // });
-
-        router.push('/panel');
-      } else {
-        // handleOpenToast({
-        //   message: join(map(errors, (error) => error.message), ', '),
-        //   title: 'Falha no login',
-        //   variant: 'error'
-        // });
-      }
-    } catch (err) {
-      const error = err as Error;
-      const message = error.message;
-
-      handleOpenToast({
-        message,
-        title: 'Falha no login',
-        variant: 'error'
-      });
-    }
-  };
+  useEffect(() => {
+    useBarbecueStore.persist.rehydrate();
+  }, []);
 
   return (
-    <main className="grid place-content-center min-h-screen flex-col p-24">
-      <div className="w-full h-full flex justify-center items-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-3 p-8 rounded-3xl z-[1px] min-w-[400px] max-w-[440px] h-max bg-slate-50/90 dark:bg-slate-800/90"
-        >
-          <h3 className="text-center font-bold text-amber-900 dark:text-slate-50">Churras da TRINCA</h3>
-
-          <div>
-            <TextField
-              type="email"
-              name="email"
-              label="E-mail"
-              control={control}
-            />
-            <TextField
-              type="password"
-              name="password"
-              label="Senha"
-              control={control}
-            />
-          </div>
-
-          <Button
-            type="submit"
-            isLoading={isSubmitting}
-          >
-            Entrar
-          </Button>
-          <Link
-            href="/signup"
-            className="text-center text-sm"
-          >
-            Inscreva-se
-          </Link>
-        </form>
-      </div>
-    </main>
+    <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 place-content-center gap-4 flex-col">
+      <Link href="/churras/criar">
+        <Card className="bg-slate-200 dark:bg-slate-900 text-slate-800 hover:bg-slate-300 hover:dark:bg-slate-700 transition-colors justify-center">
+          <CardBody className="flex-col items-center gap-4">
+            <Image src="/icon-churras.svg" alt="Churras" width={70} height={70} />
+            <span className="font-bold">Adicionar churras</span>
+          </CardBody>
+        </Card>
+      </Link>
+      {map(barbecues, (barbecue) => (
+        <Link key={barbecue.id} href={`/churras/detalhes/${barbecue.id}`}>
+          <Card>
+            <CardHeader>
+              <CardTitle>{barbecue.dateFormatted}</CardTitle>
+              <CardSubtitle>{barbecue.description}</CardSubtitle>
+            </CardHeader>
+            <CardBody>
+              <div className="flex flex-row align-center gap-2">
+                <UsersIcon className="text-amber-400" />
+                <span>{barbecue.participants?.length ?? 0}</span>
+              </div>
+              <div className="flex flex-row align-center gap-2">
+                <CircleDollarSignIcon className="text-amber-400" />
+                <span>{formatMoney(sum(map(barbecue?.participants, (participant) => participant.paid ? participant.contribution : 0)))}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </Link>
+      ))}
+    </div>
   );
 }

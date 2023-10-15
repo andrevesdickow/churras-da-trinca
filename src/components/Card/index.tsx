@@ -16,7 +16,7 @@ type CardBodyProps = React.ComponentProps<'div'>;
 
 const Card = ({ className, ...rest }: CardProps) => (
   <div
-    className={cn('w-full h-full min-h-[160px] bg-white text-slate-800 flex flex-col justify-between gap-6 p-6 rounded-lg', className)}
+    className={cn('w-full h-full min-h-[160px] text-slate-800 dark:text-slate-50 bg-slate-50 dark:bg-slate-800 flex flex-col justify-between gap-6 p-6 rounded-lg shadow-xl', className)}
     {...rest}
   />
 );

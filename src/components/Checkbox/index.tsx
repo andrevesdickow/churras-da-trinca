@@ -44,7 +44,7 @@ const Checkbox = React.forwardRef<
             className
           )}
           value={toString(field.value)}
-          defaultChecked={checked}
+          defaultChecked={field.value}
           onCheckedChange={(newChecked) => field.onChange(newChecked)}
           {...rest}
         >
@@ -56,7 +56,7 @@ const Checkbox = React.forwardRef<
         </CheckboxPrimitive.Root>
         <label
           htmlFor={name}
-          className="text-sm text-gray-500 dark:text-gray-300"
+          className="text-sm text-gray-500 dark:text-gray-300 hover:cursor-pointer"
         >
           {label}
         </label>

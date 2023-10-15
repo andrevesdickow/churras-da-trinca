@@ -30,12 +30,12 @@ const buttonVariants = cva(
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
     isLoading?: boolean;
+    asChild?: boolean;
   }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, disabled, className, variant, size, asChild = false, isLoading = false, ...rest }, ref) => {
+  ({ children, disabled, className, variant, size, isLoading = false, asChild = false, ...rest }, ref) => {
     const Comp = asChild ? Slot : 'button';
     const isDisabled = disabled || isLoading;
 
