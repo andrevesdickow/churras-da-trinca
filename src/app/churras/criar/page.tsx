@@ -10,8 +10,9 @@ import { CurrencyInput } from '@/components/CurrencyInput';
 import { Link } from '@/components/Link';
 import { TextArea } from '@/components/TextArea';
 import { TextField } from '@/components/TextField';
-import { fakeRequest } from '@/lib/utils';
 import { useBarbecueStore } from '@/stores/barbecueStore';
+import { useToastStore } from '@/stores/toastStore';
+import { fakeRequest } from '@/utils/fakeRequest';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const date = new Date();
@@ -43,7 +44,7 @@ const createBarbecueSchema = z.object({
 
 type CreateBarbecueData = z.infer<typeof createBarbecueSchema>;
 
-const defaultValues = {
+const defaultValues: CreateBarbecueData = {
   date: formatDate(new Date(), 'yyyy-MM-dd'),
   additionalObservations: '',
   description: '',
@@ -52,6 +53,8 @@ const defaultValues = {
 };
 
 export default function BarbecueCreatePage() {
+  const openToast = useToastStore((state) => state.openToast);
+
   const { control, handleSubmit, formState: { isSubmitting } } = useForm<CreateBarbecueData>({
     resolver: zodResolver(createBarbecueSchema),
     defaultValues
@@ -62,10 +65,18 @@ export default function BarbecueCreatePage() {
 
   const onSubmit: SubmitHandler<CreateBarbecueData> = async (formData) => {
     await fakeRequest(1500, formData);
+
     insertBarbecue({
       ...formData,
       dateFormatted: formatDate(new Date(`${formData.date}T12:00:00`), 'dd/MM')
     });
+
+    openToast({
+      message: 'Churras adicionado com sucesso',
+      title: '😃',
+      variant: 'success'
+    });
+
     router.replace('/');
   };
 

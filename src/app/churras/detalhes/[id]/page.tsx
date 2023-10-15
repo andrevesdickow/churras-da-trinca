@@ -9,8 +9,9 @@ import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Link } from '@/components/Link';
 import { TextField } from '@/components/TextField';
-import { formatMoney } from '@/lib/utils';
 import { useBarbecueStore } from '@/stores/barbecueStore';
+import { useToastStore } from '@/stores/toastStore';
+import { formatMoney } from '@/utils/formatMoney';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const participantsSchema = z.object({
@@ -24,15 +25,16 @@ const participantsSchema = z.object({
   )
 });
 
+type ParticipantsFormData = z.infer<typeof participantsSchema>;
+
 const newParticipantSchema = z.object({
   name: z.string().min(1, 'Insira o nome do participante'),
   withDrink: z.boolean().optional()
 });
 
-type ParticipantsFormData = z.infer<typeof participantsSchema>;
 type NewParticipantFormData = z.infer<typeof newParticipantSchema>;
 
-const newParticipantDefaultValues = {
+const newParticipantDefaultValues: NewParticipantFormData = {
   name: '',
   withDrink: false
 };
@@ -41,6 +43,8 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
   const barbecue = useBarbecueStore((state) => state.getBarbecueById(params.id));
   const insertParticipantInBarbecue = useBarbecueStore((state) => state.insertParticipantInBarbecue);
   const updateParticipantInBarbecue = useBarbecueStore((state) => state.updateParticipantInBarbecue);
+
+  const openToast = useToastStore((state) => state.openToast);
 
   const { control, register } = useForm<ParticipantsFormData>({
     defaultValues: {
@@ -84,6 +88,12 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
     insertParticipantInBarbecue(params.id, newParticipant);
 
     resetNewParticipant(newParticipantDefaultValues);
+
+    openToast({
+      message: 'Participante adicionado com sucesso',
+      title: '😃',
+      variant: 'success'
+    });
   };
 
   return (
@@ -99,7 +109,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
         <h2 className="text-2xl font-bold">{barbecue?.description}</h2>
         <div className="flex flex-row align-center gap-2">
           <CircleDollarSignIcon className="text-amber-400" />
-          <span>{formatMoney(sum(map(barbecue?.participants, (participant) => participant.paid ? participant.contribution : 0)))}</span>
+          <span>{formatMoney(sum(map(barbecue?.participants, 'contribution')))}</span>
         </div>
       </div>
       {barbecue?.additionalObservations && (
@@ -140,7 +150,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
           </div>
         )
         : (
-          <p className="text-slate-600 dark:text-slate-300 text-center">Nenhum participante cadastrado</p>
+          <p className="text-slate-600 dark:text-slate-300 text-center">Não há participantes para este churras 🫤</p>
         )}
 
       <form
@@ -166,7 +176,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
           type="submit"
           isLoading={isSubmitting}
         >
-          Adicionar novo participante
+          Adicionar participante
         </Button>
       </form>
 

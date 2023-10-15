@@ -10,7 +10,8 @@ import {
 type TextFieldTestData = {
   fieldTest: string;
 };
-const name = 'fieldTest';
+
+const name = 'textFieldTest';
 
 describe('<TextField />', () => {
   it('should render correctly TextField ', () => {
@@ -21,16 +22,16 @@ describe('<TextField />', () => {
     const { control } = resultUseForm.current;
 
     const { container } = render(
-      <TextField name={name} label="Teste" control={control} data-testid="fieldTest" />
+      <TextField name={name} label="Teste" control={control} data-testid="textFieldTest" />
     );
 
-    fireEvent.input(screen.getByTestId('fieldTest'), {
+    fireEvent.input(screen.getByTestId('textFieldTest'), {
       target: {
         value: 'test'
       }
     });
 
-    expect((screen.getByTestId('fieldTest') as HTMLInputElement).value).toBe(
+    expect((screen.getByTestId('textFieldTest') as HTMLInputElement).value).toBe(
       'test'
     );
     expect(container).toMatchSnapshot();
@@ -49,7 +50,7 @@ describe('<TextField />', () => {
         control={control}
         label="Teste"
         helperText="This field is required"
-        data-testid="fieldTest"
+        data-testid="textFieldTest"
       />
     );
 
@@ -74,11 +75,11 @@ describe('<TextField />', () => {
         label="Password test"
         type="password"
         control={control}
-        data-testid="fieldTest"
+        data-testid="textFieldTest"
       />
     );
 
-    const input = screen.getByTestId('fieldTest') as HTMLInputElement;
+    const input = screen.getByTestId('textFieldTest') as HTMLInputElement;
 
     expect(screen.getByLabelText(/Password test/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Mostrar' })).toBeInTheDocument();

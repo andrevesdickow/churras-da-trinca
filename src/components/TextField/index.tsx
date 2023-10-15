@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/Tooltip';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/mergeClassName';
 
 export const helperTextClassName = tv({
   base: 'text-[0.625rem] mt-1',
