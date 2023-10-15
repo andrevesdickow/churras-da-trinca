@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Checkbox /> should render correctly Checkbox 1`] = `
+<div>
+  <script>
+    !function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme = 'dark';c.add('dark')}else{d.style.colorScheme = 'light';c.add('light')}}else if(e){c.add(e|| '')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()
+  </script>
+  <div
+    class="flex flex-col mb-2"
+  >
+    <div
+      class="flex gap-2 items-center"
+    >
+      <button
+        aria-checked="false"
+        class="peer h-4 w-4 shrink-0 rounded-sm border border-amber-300 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-amber-300 data-[state=checked]:text-white dark:border-amber-300 dark:ring-offset-violet-950 dark:focus-visible:ring-violet-300 dark:data-[state=checked]:bg-amber-300 dark:data-[state=checked]:text-white"
+        data-state="unchecked"
+        id="checkboxTest"
+        role="checkbox"
+        type="button"
+        value="false"
+      />
+      <label
+        class="text-sm text-gray-500 dark:text-gray-300 hover:cursor-pointer"
+        for="checkboxTest"
+      />
+    </div>
+  </div>
+</div>
+`;
