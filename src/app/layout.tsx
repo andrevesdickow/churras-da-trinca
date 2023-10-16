@@ -27,7 +27,7 @@ export default function RootLayout({
         <NextThemeProvider>
           <TooltipProvider>
             <Header />
-            <main className="relative flex items-center gap-4 w-full flex-col px-10 top-40">
+            <main className="relative flex items-center gap-4 w-full flex-col px-10 top-40 md:max-w-[1200px] md:m-auto">
               {children}
             </main>
           </TooltipProvider>
