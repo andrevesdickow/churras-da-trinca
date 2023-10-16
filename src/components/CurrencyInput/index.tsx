@@ -1,13 +1,13 @@
 'use client';
 
 import ReactCurrencyInput from 'react-currency-input';
-import { useController } from 'react-hook-form';
-import { omit } from 'lodash';
+import { type Control, useController } from 'react-hook-form';
+import omit from 'lodash/omit';
 import { helperTextClassName } from '../TextField';
 
 type CurrencyInputProps = {
   name: string;
-  control: any;
+  control: Control<any>;
   label: React.ReactNode | string;
   helperText?: string;
   value?: number;

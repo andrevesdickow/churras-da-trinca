@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLInputTypeAttribute, useState } from 'react';
-import { useController } from 'react-hook-form';
+import { type Control, useController } from 'react-hook-form';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import toString from 'lodash/toString';
 import { Eye as EyeIcon, EyeOff as EyeOffIcon } from 'lucide-react';
@@ -29,7 +29,7 @@ export const helperTextClassName = tv({
 
 type TextFieldProps = React.ComponentProps<'input'> & {
   name: string;
-  control: any;
+  control: Control<any>;
   label: React.ReactNode | string;
   withPasswordStrength?: boolean;
   helperText?: string;
