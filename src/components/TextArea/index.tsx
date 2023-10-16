@@ -1,11 +1,11 @@
 'use client';
 
-import { useController } from 'react-hook-form';
+import { type Control, useController } from 'react-hook-form';
 import { helperTextClassName } from '../TextField';
 
 type TextAreaProps = {
   name: string;
-  control: any;
+  control: Control<any>;
   label: React.ReactNode | string;
   helperText?: string;
 } & React.ComponentProps<'textarea'>

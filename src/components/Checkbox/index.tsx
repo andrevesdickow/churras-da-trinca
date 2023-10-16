@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useController } from 'react-hook-form';
+import { type Control, useController } from 'react-hook-form';
 import toString from 'lodash/toString';
 import { Check as CheckIcon } from 'lucide-react';
 import { cn } from '@/utils/mergeClassName';
@@ -8,7 +8,7 @@ import { helperTextClassName } from '../TextField';
 
 type CheckboxProps = React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
   name: string;
-  control: any;
+  control: Control<any>;
   label?: React.ReactNode | string;
   helperText?: string;
 }

@@ -22,21 +22,17 @@ const participantsSchema = z.object({
       paid: z.boolean(),
       contribution: z.number()
     })
-  )
-});
-
-type ParticipantsFormData = z.infer<typeof participantsSchema>;
-
-const newParticipantSchema = z.object({
+  ),
   name: z.string().min(1, 'Nome é obrigatário'),
   withDrink: z.boolean().optional()
 });
 
-type NewParticipantFormData = z.infer<typeof newParticipantSchema>;
+type ParticipantsFormData = z.infer<typeof participantsSchema>;
 
-const newParticipantDefaultValues: NewParticipantFormData = {
+const participantsDefaultValues: ParticipantsFormData = {
   name: '',
-  withDrink: false
+  withDrink: false,
+  participantOptions: []
 };
 
 export default function BarbecueDetailsPage({ params }: { params: { id: string } }) {
@@ -46,11 +42,15 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
 
   const openToast = useToastStore((state) => state.openToast);
 
-  const { control, register } = useForm<ParticipantsFormData>({
-    defaultValues: {
-      participantOptions: []
-    },
-    resolver: zodResolver(participantsSchema)
+  const {
+    control,
+    register,
+    resetField,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<ParticipantsFormData>({
+    resolver: zodResolver(participantsSchema),
+    defaultValues: participantsDefaultValues
   });
 
   const { fields, append, update } = useFieldArray({
@@ -58,21 +58,11 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
     control
   });
 
-  const {
-    control: controlNewParticipant,
-    reset: resetNewParticipant,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<NewParticipantFormData>({
-    resolver: zodResolver(newParticipantSchema),
-    defaultValues: newParticipantDefaultValues
-  });
-
   useEffect(() => {
     forEach(barbecue?.participants, (participant) => append(participant));
   }, []);
 
-  const handleAppendNewParticipant = (formData: NewParticipantFormData) => {
+  const handleAppendNewParticipant = (formData: ParticipantsFormData) => {
     const participantId = crypto.randomUUID();
     const participantContribution = (formData.withDrink ? barbecue?.priceWithDrink : barbecue?.priceWithoutDrink) || 0;
 
@@ -87,7 +77,8 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
 
     insertParticipantInBarbecue(params.id, newParticipant);
 
-    resetNewParticipant(newParticipantDefaultValues);
+    resetField('name', { defaultValue: participantsDefaultValues.name });
+    resetField('withDrink', { defaultValue: participantsDefaultValues.withDrink });
 
     openToast({
       message: 'Participante adicionado com sucesso',
@@ -162,13 +153,13 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
             name="name"
             label="Nome"
             className="flex-1"
-            control={controlNewParticipant}
+            control={control}
           />
 
           <Checkbox
             name="withDrink"
             label="Com bebida?"
-            control={controlNewParticipant}
+            control={control}
           />
         </div>
 
