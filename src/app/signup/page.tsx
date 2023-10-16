@@ -5,25 +5,20 @@ import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
 import { join, map } from 'lodash';
 import { Button } from '@/components/Button';
+import { Checkbox } from '@/components/Checkbox';
 import { Link } from '@/components/Link';
 import { TextField } from '@/components/TextField';
 import { AuthKeys } from '@/enums/AuthKeys';
-import { signInSchema } from '@/schemas/signInSchema';
-import { signIn } from '@/services/auth';
+import { signUpSchema } from '@/schemas/signUpSchema';
+import { signUp } from '@/services/auth';
 import { useAuthStore } from '@/stores/authStore';
 import { useToastStore } from '@/stores/toastStore';
-import { SignInData } from '@/types/auth';
+import { SignUpData } from '@/types/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function SignInPage() {
-  const {
-    control,
-    handleSubmit,
-    formState: {
-      isSubmitting
-    }
-  } = useForm<SignInData>({
-    resolver: zodResolver(signInSchema)
+export default function SignUpPage() {
+  const { control, handleSubmit, formState: { isSubmitting } } = useForm<SignUpData>({
+    resolver: zodResolver(signUpSchema)
   });
 
   const handleOpenToast = useToastStore((state) => state.openToast);
@@ -31,11 +26,11 @@ export default function SignInPage() {
 
   const router = useRouter();
 
-  const handleUserSignIn: SubmitHandler<SignInData> = async (formData) => {
+  const handleUserSignUp: SubmitHandler<SignUpData> = async (formData) => {
     try {
-      const { result, success, errors } = await signIn(formData);
+      const { result, success, errors } = await signUp(formData);
 
-      if (success && result) {
+      if (success) {
         setUser(result);
 
         setCookie(AuthKeys.ACCESS_TOKEN, result.id, {
@@ -66,12 +61,18 @@ export default function SignInPage() {
   return (
     <div className="w-full h-screen overflow-hidden flex justify-center items-center bg-amber-400 bg-barbecue">
       <form
-        onSubmit={handleSubmit(handleUserSignIn)}
+        onSubmit={handleSubmit(handleUserSignUp)}
         className="flex flex-col gap-3 p-8 rounded-3xl z-[1px] min-w-[400px] max-w-[440px] h-max bg-slate-50 dark:bg-slate-800 shadow-xl"
       >
-        <h3 className="text-center font-semibold text-primary-900 dark:text-slate-50">Churras da <span className="font-bold uppercase">Trinca</span></h3>
+        <h3 className="text-center font-semibold text-primary-900 dark:text-slate-50">Faça seu cadastro para acompanhar os churras da <span className="font-bold uppercase">Trinca</span></h3>
 
         <div>
+          <TextField
+            type="text"
+            name="name"
+            label="Nome completo"
+            control={control}
+          />
           <TextField
             type="email"
             name="email"
@@ -83,6 +84,19 @@ export default function SignInPage() {
             name="password"
             label="Senha"
             control={control}
+            helperText="A senha deve possuir no mínimo 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial"
+            withPasswordStrength
+          />
+          <TextField
+            type="password"
+            name="confirmPassword"
+            label="Confirmar senha"
+            control={control}
+          />
+          <Checkbox
+            name="confirmAndAgree"
+            label="Confirmar e aceitar os termos de uso"
+            control={control}
           />
         </div>
 
@@ -90,13 +104,13 @@ export default function SignInPage() {
           type="submit"
           isLoading={isSubmitting}
         >
-          Entrar
+          Cadastrar
         </Button>
         <Link
-          href="/signup"
+          href="/"
           className="text-center text-sm"
         >
-          Inscreva-se
+          Voltar para login
         </Link>
       </form>
     </div>

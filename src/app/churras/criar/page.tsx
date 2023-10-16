@@ -2,47 +2,22 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { format as formatDate, isValid } from 'date-fns';
-import { isEmpty } from 'lodash';
-import { z } from 'zod';
+import { format as formatDate } from 'date-fns';
+import { join, map } from 'lodash';
 import { Button } from '@/components/Button';
 import { CurrencyInput } from '@/components/CurrencyInput';
 import { Link } from '@/components/Link';
 import { TextArea } from '@/components/TextArea';
 import { TextField } from '@/components/TextField';
-import { useBarbecueStore } from '@/stores/barbecueStore';
+import { queryClient } from '@/lib/queryClient';
+import { createBarbecueSchema } from '@/schemas/createBarbecueSchema';
+import { createBarbecue } from '@/services/barbecue';
 import { useToastStore } from '@/stores/toastStore';
-import { fakeRequest } from '@/utils/fakeRequest';
+import { CreateBarbecueData } from '@/types/barbecue';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const date = new Date();
 date.setDate(date.getDate() - 1);
-
-const createBarbecueSchema = z.object({
-  date: z.string()
-    .superRefine((val, ctx) => {
-      if (isEmpty(val)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Data é obrigatório.'
-        });
-      }
-
-      if (!isValid(new Date(val))) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.invalid_date,
-          message: 'Data inválida'
-        });
-      }
-    }),
-  description: z.string()
-    .min(1, 'Descrição é obrigatório'),
-  additionalObservations: z.string().optional(),
-  priceWithDrink: z.number(),
-  priceWithoutDrink: z.number()
-});
-
-type CreateBarbecueData = z.infer<typeof createBarbecueSchema>;
 
 const defaultValues: CreateBarbecueData = {
   date: formatDate(new Date(), 'yyyy-MM-dd'),
@@ -60,24 +35,28 @@ export default function BarbecueCreatePage() {
     defaultValues
   });
 
-  const insertBarbecue = useBarbecueStore((state) => state.insertBarbecue);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<CreateBarbecueData> = async (formData) => {
-    await fakeRequest(1500, formData);
+    const { success, errors } = await createBarbecue(formData);
 
-    insertBarbecue({
-      ...formData,
-      dateFormatted: formatDate(new Date(`${formData.date}T12:00:00`), 'dd/MM')
-    });
+    if (success) {
+      openToast({
+        message: 'Churras adicionado com sucesso',
+        title: '😃',
+        variant: 'success'
+      });
 
-    openToast({
-      message: 'Churras adicionado com sucesso',
-      title: '😃',
-      variant: 'success'
-    });
+      queryClient.invalidateQueries(['trinca-barbecues']);
 
-    router.replace('/');
+      router.replace('/churras');
+    } else {
+      openToast({
+        message: join(map(errors, (error) => error.message), ', '),
+        title: 'Falha no cadastro',
+        variant: 'error'
+      });
+    }
   };
 
   return (
@@ -127,7 +106,7 @@ export default function BarbecueCreatePage() {
         Criar churras
       </Button>
       <Link
-        href="/"
+        href="/churras"
         className="text-center text-sm"
       >
         Voltar

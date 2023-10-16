@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { setDefaultOptions } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Header } from '@/components/Header';
 import { ToastContainer } from '@/components/Toast';
 import { TooltipProvider } from '@/components/Tooltip';
 import { NextThemeProvider } from '@/providers/NextThemeProvider';
@@ -26,10 +25,7 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <NextThemeProvider>
           <TooltipProvider>
-            <Header />
-            <main className="relative flex items-center gap-4 w-full flex-col px-10 top-40 md:max-w-[1200px] md:m-auto">
-              {children}
-            </main>
+            {children}
           </TooltipProvider>
           <ToastContainer />
         </NextThemeProvider>

@@ -1,33 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { forEach, map, sum } from 'lodash';
+import { forEach, join, map, sum } from 'lodash';
 import { Users as UsersIcon, CircleDollarSign as CircleDollarSignIcon } from 'lucide-react';
-import { z } from 'zod';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Link } from '@/components/Link';
+import { Skeleton } from '@/components/Skeleton';
 import { TextField } from '@/components/TextField';
-import { useBarbecueStore } from '@/stores/barbecueStore';
+import { queryClient } from '@/lib/queryClient';
+import { participantsSchema } from '@/schemas/participantsSchema';
+import { createParticipantInBarbecue, getBarbecueById, markParticipantAsPaid } from '@/services/barbecue';
 import { useToastStore } from '@/stores/toastStore';
+import { ParticipantsFormData } from '@/types/barbecue';
 import { formatMoney } from '@/utils/formatMoney';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-const participantsSchema = z.object({
-  participantOptions: z.array(
-    z.object({
-      participantId: z.string(),
-      name: z.string(),
-      paid: z.boolean(),
-      contribution: z.number()
-    })
-  ),
-  name: z.string().min(1, 'Nome é obrigatário'),
-  withDrink: z.boolean().optional()
-});
-
-type ParticipantsFormData = z.infer<typeof participantsSchema>;
+import { useQuery } from '@tanstack/react-query';
 
 const participantsDefaultValues: ParticipantsFormData = {
   name: '',
@@ -35,13 +23,9 @@ const participantsDefaultValues: ParticipantsFormData = {
   participantOptions: []
 };
 
+type Participant = ParticipantsFormData['participantOptions'][0];
+
 export default function BarbecueDetailsPage({ params }: { params: { id: string } }) {
-  const barbecue = useBarbecueStore((state) => state.getBarbecueById(params.id));
-  const insertParticipantInBarbecue = useBarbecueStore((state) => state.insertParticipantInBarbecue);
-  const updateParticipantInBarbecue = useBarbecueStore((state) => state.updateParticipantInBarbecue);
-
-  const openToast = useToastStore((state) => state.openToast);
-
   const {
     control,
     register,
@@ -58,34 +42,85 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
     control
   });
 
-  useEffect(() => {
-    forEach(barbecue?.participants, (participant) => append(participant));
-  }, []);
+  const { data, isFetching } = useQuery({
+    queryKey: ['trinca-barbecue', params.id],
+    queryFn: () => getBarbecueById(params.id),
+    onSuccess(data) {
+      const { result } = data;
+      forEach(result.participants, (participant) => append(participant));
+    },
+    staleTime: Infinity
+  });
 
-  const handleAppendNewParticipant = (formData: ParticipantsFormData) => {
-    const participantId = crypto.randomUUID();
-    const participantContribution = (formData.withDrink ? barbecue?.priceWithDrink : barbecue?.priceWithoutDrink) || 0;
+  const openToast = useToastStore((state) => state.openToast);
 
-    const newParticipant = {
-      participantId,
-      paid: false,
+  const barbecue = data?.result;
+
+  const handleAppendNewParticipant = async (formData: ParticipantsFormData) => {
+    const { result, success, errors } = await createParticipantInBarbecue({
+      barbecueId: params.id,
       name: formData.name,
-      contribution: participantContribution
-    };
-
-    append(newParticipant);
-
-    insertParticipantInBarbecue(params.id, newParticipant);
-
-    resetField('name', { defaultValue: participantsDefaultValues.name });
-    resetField('withDrink', { defaultValue: participantsDefaultValues.withDrink });
-
-    openToast({
-      message: 'Participante adicionado com sucesso',
-      title: '😃',
-      variant: 'success'
+      withDrink: formData.withDrink
     });
+
+    if (success) {
+      const newParticipant = {
+        participantId: result.id,
+        paid: false,
+        name: formData.name,
+        contribution: result.amount
+      };
+
+      append(newParticipant);
+
+      resetField('name', { defaultValue: participantsDefaultValues.name });
+      resetField('withDrink', { defaultValue: participantsDefaultValues.withDrink });
+
+      openToast({
+        message: 'Participante adicionado com sucesso',
+        title: '😃',
+        variant: 'success'
+      });
+    } else {
+      openToast({
+        message: join(map(errors, (error) => error.message), ', '),
+        title: 'Falha no cadastro',
+        variant: 'error'
+      });
+    }
   };
+
+  const handleChangeParticipantPaidStatus = async (
+    participant: Participant,
+    index: number,
+    paid: boolean
+  ) => {
+    const { success, errors } = await markParticipantAsPaid({
+      participantId: participant.participantId,
+      paid
+    });
+
+    if (success) {
+      const fieldUpdated = {
+        ...participant,
+        paid
+      };
+
+      update(index, fieldUpdated);
+
+      queryClient.invalidateQueries(['trinca-barbecues']);
+    } else {
+      openToast({
+        message: join(map(errors, (error) => error.message), ', '),
+        title: 'Falha ao marcar como pago',
+        variant: 'error'
+      });
+    }
+  };
+
+  if (isFetching) {
+    return <Skeleton className="w-full h-[450px] px-10" />;
+  }
 
   return (
     <div className="flex flex-col gap-3 p-8 rounded-3xl z-[1px] min-w-[400px] w-full h-max bg-slate-50 dark:bg-slate-800 shadow-xl">
@@ -93,14 +128,14 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
         <h5 className="text-lg font-semibold">{barbecue?.dateFormatted}</h5>
         <div className="flex flex-row align-center gap-2">
           <UsersIcon className="text-amber-400" />
-          <span>{barbecue?.participants?.length ?? 0}</span>
+          <span>{fields?.length ?? 0}</span>
         </div>
       </div>
       <div className="flex justify-between">
         <h2 className="text-2xl font-bold">{barbecue?.description}</h2>
         <div className="flex flex-row align-center gap-2">
           <CircleDollarSignIcon className="text-amber-400" />
-          <span>{formatMoney(sum(map(barbecue?.participants, 'contribution')))}</span>
+          <span>{formatMoney(sum(map(fields, 'contribution')))}</span>
         </div>
       </div>
       {barbecue?.additionalObservations && (
@@ -119,16 +154,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
                     {...register(`participantOptions.${index}.paid`)}
                     control={control}
                     label={field.name}
-                    onCheckedChange={(checked: boolean) => {
-                      const fieldUpdated = {
-                        ...field,
-                        paid: checked
-                      };
-
-                      updateParticipantInBarbecue(params.id, fieldUpdated);
-
-                      update(index, fieldUpdated);
-                    }}
+                    onCheckedChange={(checked: boolean) => handleChangeParticipantPaidStatus(field, index, checked)}
                   />
                   {field.paid ? (
                     <del className="text-slate-600 dark:text-slate-300">{formatMoney(field.contribution)}</del>
@@ -172,7 +198,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
       </form>
 
       <Link
-        href="/"
+        href="/churras"
         className="text-center text-sm"
       >
         Voltar

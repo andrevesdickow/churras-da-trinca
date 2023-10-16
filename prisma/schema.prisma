@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       String    @id @default(cuid())
+  name     String
+  email    String    @unique
+  password String
+  created  DateTime  @default(now())
+  modified DateTime?
+  deleted  Boolean   @default(false)
+
+  barbecues Barbecues[]
+}
+
+model Barbecues {
+  id                     String   @id @default(cuid())
+  date                   DateTime
+  description            String
+  additionalObservations String?
+  priceWithDrink         Decimal  @default(0)
+  priceWithoutDrink      Decimal  @default(0)
+  userId                 String
+
+  user Users @relation(fields: [userId], references: [id])
+
+  participants BarbecueParticipants[]
+}
+
+model BarbecueParticipants {
+  id         String  @id @default(cuid())
+  barbecueId String
+  name       String
+  amount     Decimal @default(0)
+  paid       Boolean @default(false)
+
+  barbecue Barbecues @relation(fields: [barbecueId], references: [id])
+}
