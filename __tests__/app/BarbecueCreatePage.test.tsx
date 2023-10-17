@@ -39,6 +39,6 @@ describe('<BarbecueCreatePage />', () => {
   it('should render back button correctly in Barbecue Create Page', () => {
     render(<BarbecueCreatePage />);
 
-    expect(screen.getByRole('link', { name: 'Voltar' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: 'Voltar' })).toHaveAttribute('href', '/churras');
   });
 });

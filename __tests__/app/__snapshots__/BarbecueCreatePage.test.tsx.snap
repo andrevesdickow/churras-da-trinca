@@ -117,7 +117,7 @@ exports[`<BarbecueCreatePage /> should render correctly Barbecue Create Page 1`]
     </button>
     <a
       class="text-amber-400 hover:text-amber-500 transition-colors text-center text-sm"
-      href="/"
+      href="/churras"
     >
       Voltar
     </a>
