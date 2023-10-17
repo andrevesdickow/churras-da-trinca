@@ -7,22 +7,25 @@
     <img alt="React" src="https://img.shields.io/badge/react-%2323272f.svg?style=for-the-badge&logo=react&logoColor=%23149eca" />
   </a>
   <a target="_blank" href="https://nextjs.org/">
-    <img alt="Next.js" src="https://img.shields.io/badge/next.js-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=%23ffffff" />
+    <img alt="Next.js" src="https://img.shields.io/badge/next.js-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://www.typescriptlang.org/">
     <img alt="Typescript" src="https://img.shields.io/badge/typescript-%233178C6.svg?style=for-the-badge&logo=typescript&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://tailwindcss.com/">
-    <img alt="Tailwind" src="https://img.shields.io/badge/tailwind%20css-%230ea5e9.svg?style=for-the-badge&logo=tailwind%20css&logoColor=%23ffffff" />
+    <img alt="Tailwind" src="https://img.shields.io/badge/tailwind%20css-%230ea5e9.svg?style=for-the-badge&logo=tailwind%20css&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://react-hook-form.com/">
-    <img alt="React Hook Form" src="https://img.shields.io/badge/react--hook--form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=%23ffffff" />
+    <img alt="React Hook Form" src="https://img.shields.io/badge/react--hook--form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://jestjs.io/pt-BR/">
-    <img alt="Jest" src="https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white" />
+    <img alt="Jest" src="https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://testing-library.com/">
-    <img alt="Testing Library" src="https://img.shields.io/badge/-Testing--Library-%23E33332?style=for-the-badge&logo=testing-library&logoColor=white" />
+    <img alt="Testing Library" src="https://img.shields.io/badge/-Testing--Library-%23E33332?style=for-the-badge&logo=testing-library&logoColor=%23FFFFFF" />
+  </a>
+  <a target="_blank" href="https://www.prisma.io/">
+    <img alt="Prisma" src="https://img.shields.io/badge/prisma-%23FFFFFF?style=for-the-badge&logo=prisma&logoColor=%232D3748" />
   </a>
 </p>
 
@@ -49,24 +52,9 @@ Aqui, gostamos de dar a oportunidade para que todos mostrem o seu trabalho na pr
 - **[Jest](https://jestjs.io/pt-BR/)**
 - **[Testing Library](https://testing-library.com/)**
 
-## 🔎 Comandos
-
-- `dev`: Executa a aplicação em `localhost:3000`;
-- `build`: Cria a _build_ do projeto;
-- `start`: Executa a aplicação conforme build de produção gerado;
-- `lint`: Executa o _lint_ do next em todos componentes e páginas;
-- `test`: Executa os testes unitários;
-- `test:watch`: Executa os testes unitários em tempo real;
-
-```bash
-# Executar os scripts do DB em SQLite
-$ npx prisma migrate dev
-```
-
 ## 🚀 Como rodar este projeto
 
 Para clonar e executar este aplicativo, você precisará de [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) e [NPM](https://www.npmjs.com/) instalado em seu computador.
-
 
 ### 🔃 Requisitos e versões:
 
@@ -97,10 +85,35 @@ $ cd churras-da-trinca
 # OBS.: não modificar ou excluir o arquivo .env.example
 
 DATABASE_URL="file:./dev.db"
-CRYPTOGRAPHY_KEY="" # Pode ser gerado aqui (https://acte.ltd/utils/randomkeygen)
+CRYPTOGRAPHY_KEY="MbQeThWmZq4t7w!z" # Pode também ser gerado aqui (https://acte.ltd/utils/randomkeygen)
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 NEXT_TELEMETRY_DISABLED=1
 ```
+
+### 🚀 Iniciando o projeto
+
+```bash
+# Instale as dependências
+$ npm install # ou
+$ yarn
+
+# Executar os scripts do DB em SQLite
+$ npx prisma generate
+$ npx prisma migrate dev
+
+# Para executar o projeto
+$ npm run dev # ou
+$ yarn dev
+```
+
+### 🔎 Comandos
+
+- `dev`: Executa a aplicação em `localhost:3000`;
+- `build`: Cria a _build_ do projeto;
+- `start`: Executa a aplicação conforme build de produção gerado;
+- `lint`: Executa o _lint_ do next em todos componentes e páginas;
+- `test`: Executa os testes unitários;
+- `test:watch`: Executa os testes unitários em tempo real;
 
 ### ✉️ Mensagem de Commit
 
