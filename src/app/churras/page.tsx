@@ -10,7 +10,7 @@ import { getBarbecues } from '@/services/barbecue';
 import { formatMoney } from '@/utils/formatMoney';
 import { useQuery } from '@tanstack/react-query';
 
-export default function HomePage() {
+export default function BarbecuePage() {
   const { data, isFetching } = useQuery({
     queryKey: ['trinca-barbecues'],
     queryFn: getBarbecues,

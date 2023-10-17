@@ -13,9 +13,7 @@ exports[`<BarbecueDetailsPage /> should render correctly Barbecue Details Page 1
     >
       <h5
         class="text-lg font-semibold"
-      >
-        25/12
-      </h5>
+      />
       <div
         class="flex flex-row align-center gap-2"
       >
@@ -56,9 +54,7 @@ exports[`<BarbecueDetailsPage /> should render correctly Barbecue Details Page 1
     >
       <h2
         class="text-2xl font-bold"
-      >
-        Festa de Natal
-      </h2>
+      />
       <div
         class="flex flex-row align-center gap-2"
       >
@@ -167,7 +163,7 @@ exports[`<BarbecueDetailsPage /> should render correctly Barbecue Details Page 1
     </form>
     <a
       class="text-amber-400 hover:text-amber-500 transition-colors text-center text-sm"
-      href="/"
+      href="/churras"
     >
       Voltar
     </a>

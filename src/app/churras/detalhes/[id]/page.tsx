@@ -48,8 +48,7 @@ export default function BarbecueDetailsPage({ params }: { params: { id: string }
     onSuccess(data) {
       const { result } = data;
       forEach(result.participants, (participant) => append(participant));
-    },
-    staleTime: Infinity
+    }
   });
 
   const openToast = useToastStore((state) => state.openToast);
