@@ -93,10 +93,11 @@ $ cd churras-da-trinca
 ### 📁 Configuração .ENV
 
 ```bash
-# copie o .env.example para .env.local no projeto, lembrar de adicionar as variáveis de ambiente conforme o exemplo
+# copie o .env.example para .env no projeto, lembrar de adicionar as variáveis de ambiente conforme o exemplo
 # OBS.: não modificar ou excluir o arquivo .env.example
 
 DATABASE_URL="file:./dev.db"
+CRYPTOGRAPHY_KEY="" # Pode ser gerado aqui (https://acte.ltd/utils/randomkeygen)
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 NEXT_TELEMETRY_DISABLED=1
 ```

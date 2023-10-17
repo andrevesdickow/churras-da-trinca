@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { signUpSchema } from '@/schemas/signUpSchema';
+import { encrypt } from '@/utils/cryptography';
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,11 +25,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const encryptedPassword = encrypt(password, process.env.CRYPTOGRAPHY_KEY as string);
+
     const user = await prisma.users.create({
       data: {
         email,
         name,
-        password,
+        password: encryptedPassword,
         created: new Date(),
         deleted: false
       },

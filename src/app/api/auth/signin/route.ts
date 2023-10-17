@@ -1,15 +1,18 @@
 import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { signInSchema } from '@/schemas/signInSchema';
+import { encrypt } from '@/utils/cryptography';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = signInSchema.parse(await request.json());
 
+    const encryptedPassword = encrypt(password, process.env.CRYPTOGRAPHY_KEY as string);
+
     const user = await prisma.users.findFirst({
       where: {
         email,
-        password
+        password: encryptedPassword
       },
       select: {
         id: true,

@@ -1,19 +1,38 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteCookie } from 'cookies-next';
 import { LogOut as LogOutIcon } from 'lucide-react';
 import { AuthKeys } from '@/enums/AuthKeys';
+import { me } from '@/services/auth';
+import { useAuthStore } from '@/stores/authStore';
 import { Button } from '../Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
 export const Header = () => {
   const router = useRouter();
+  const { user, setUser } = useAuthStore();
 
   const handleLogout = () => {
     deleteCookie(AuthKeys.ACCESS_TOKEN);
     router.replace('/');
   };
+
+  useEffect(() => {
+    if (!user) {
+      (async () => {
+        const { success, result } = await me();
+
+        if (success) {
+          setUser(result);
+        } else {
+          deleteCookie(AuthKeys.ACCESS_TOKEN);
+          router.replace('/');
+        }
+      })();
+    }
+  }, [user, setUser, router]);
 
   return (
     <header className="w-full h-[250px] fixed bg-gradient-to-b from-amber-400 via-70% via-amber-100 to-white dark:via-black/5 dark:to-black-900">
