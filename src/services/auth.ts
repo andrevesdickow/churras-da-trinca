@@ -35,6 +35,7 @@ export async function signUp(params: SignUpData) {
 
 export async function me() {
   const data = await request<MeResponse>('/api/auth/me', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },

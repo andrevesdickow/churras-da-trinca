@@ -20,8 +20,6 @@ describe('<BarbecueDetailsPage />', () => {
   it('should render correctly Barbecue Details Page', () => {
     const { container } = render(<BarbecueDetailsPage params={{ id: '1' }} />);
 
-    // expect(screen.getByText('25/12')).toBeInTheDocument();
-    // expect(screen.getByText('Festa de Natal')).toBeInTheDocument();
     expect(screen.getByText(/Não há participantes para este churras/i)).toBeInTheDocument();
 
     expect(container).toMatchSnapshot();
@@ -38,8 +36,6 @@ describe('<BarbecueDetailsPage />', () => {
     fireEvent.input(screen.getByRole('textbox', { name: 'Nome' }), { target: { value: 'John Doe' } });
 
     await waitForElementToBeRemoved(() => screen.queryByRole('alert'));
-
-    // fireEvent.submit(screen.getByRole('button'));
   });
 
   it('should render back button correctly in Barbecue Details Page', () => {

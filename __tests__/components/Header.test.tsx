@@ -11,6 +11,17 @@ jest.mock('next/navigation', () => ({
   }
 }));
 
+jest.mock('@/services/auth', () => ({
+  me: jest.fn().mockResolvedValue({
+    success: true,
+    result: {
+      id: '1',
+      name: 'John Doe',
+      email: 'john@doe.com'
+    }
+  })
+}));
+
 describe('<Header />', () => {
   it('should render correctly Header', () => {
     const { container } = render(<Header />);

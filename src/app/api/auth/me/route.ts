@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     return Response.json({
       success: false,
       statusCode: 404,
-      errors: [{ message: 'E-mail ou senha inválida' }],
+      errors: [{ message: 'Usuário inválido' }],
       result: user
     }, { status: 404 });
   }
