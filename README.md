@@ -4,10 +4,13 @@
 
 <p align="center">
   <a target="_blank" href="https://react.dev/">
-    <img alt="React" src="https://img.shields.io/badge/react-%2323272f.svg?style=for-the-badge&logo=React&logoColor=%23149eca" />
+    <img alt="React" src="https://img.shields.io/badge/react-%2323272f.svg?style=for-the-badge&logo=react&logoColor=%23149eca" />
   </a>
   <a target="_blank" href="https://nextjs.org/">
     <img alt="Next.js" src="https://img.shields.io/badge/next.js-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=%23ffffff" />
+  </a>
+  <a target="_blank" href="https://www.typescriptlang.org/">
+    <img alt="Typescript" src="https://img.shields.io/badge/typescript-%233178C6.svg?style=for-the-badge&logo=typescript&logoColor=%23FFFFFF" />
   </a>
   <a target="_blank" href="https://tailwindcss.com/">
     <img alt="Tailwind" src="https://img.shields.io/badge/tailwind%20css-%230ea5e9.svg?style=for-the-badge&logo=tailwind%20css&logoColor=%23ffffff" />
@@ -55,6 +58,11 @@ Aqui, gostamos de dar a oportunidade para que todos mostrem o seu trabalho na pr
 - `test`: Executa os testes unitários;
 - `test:watch`: Executa os testes unitários em tempo real;
 
+```bash
+# Executar os scripts do DB em SQLite
+$ npx prisma migrate dev
+```
+
 ## 🚀 Como rodar este projeto
 
 Para clonar e executar este aplicativo, você precisará de [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) e [NPM](https://www.npmjs.com/) instalado em seu computador.
@@ -80,6 +88,17 @@ $ git clone git@github.com:andrevesdickow/churras-da-trinca.git
 
 # Acesse a pasta do projeto no terminal/cmd
 $ cd churras-da-trinca
+```
+
+### 📁 Configuração .ENV
+
+```bash
+# copie o .env.example para .env.local no projeto, lembrar de adicionar as variáveis de ambiente conforme o exemplo
+# OBS.: não modificar ou excluir o arquivo .env.example
+
+DATABASE_URL="file:./dev.db"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_TELEMETRY_DISABLED=1
 ```
 
 ### ✉️ Mensagem de Commit
